@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/apporoad/history.node.js#readme",
   "dependencies": {
-    "mini-db": "^1.0.1"
+    "mini-db": "^1.0.1",
+    "peeriocjs": "^2.4.0"
   }
 }
