@@ -12,11 +12,11 @@ var x = function(){
     
     hist.addHistory("abc","cd")
     
-    setTimeout(x, 1);
+    setTimeout(x, 10);
 }
 
 
-//x();
+x();
 //hist.clearAll();
 //hist.getHistory();
 

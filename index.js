@@ -32,7 +32,7 @@ var clearVerbose = function(){
 
             }
             isClearing = false;
-        }, 100);
+        }, 500);
     }
 }
 
@@ -48,6 +48,20 @@ https://github.com/tianmajs/mini-db
 */
 
 exports.getHistory = function(number){
+    if(!number || number <10){
+        number = 10
+    }
+    var dbPath = path.join(os.tmpdir() , fileName())
+    var db = storage(dbPath)
+
+    var items = db.select(sys)
+    items.forEach(element => {
+        console.log(element.timestamp + " " +  element.date + " " + element.content)
+    });
+
+}
+
+exports.PrintHistory = function(number){
     if(!number || number <10){
         number = 10
     }
