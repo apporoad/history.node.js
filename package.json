@@ -1,0 +1,22 @@
+{
+  "name": "history.node",
+  "version": "1.0.0",
+  "description": "history for node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apporoad/history.node.js.git"
+  },
+  "author": "apporoad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apporoad/history.node.js/issues"
+  },
+  "homepage": "https://github.com/apporoad/history.node.js#readme",
+  "dependencies": {
+    "mini-db": "^1.0.1"
+  }
+}
