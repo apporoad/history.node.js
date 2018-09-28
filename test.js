@@ -1,9 +1,11 @@
 
 var hist = require('./')
 
+console.log(require('os').tmpdir())
 
-    // for(var i=0;i<10;i++)
-    //    hist.addHistory("abc","cd")
+// for(var i=0;i<1000;i++)
+//     hist.addHistory("abc","cd")
+
 var i =0;
 
 var x = function(){
@@ -16,7 +18,7 @@ var x = function(){
 }
 
 
-x();
+//x();
 //hist.clearAll();
 //hist.getHistory();
 
@@ -28,3 +30,6 @@ x();
 //hist.clearVerbose();
 
 console.log(hist.count())
+
+
+hist.printHistory(10)

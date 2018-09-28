@@ -55,13 +55,12 @@ exports.getHistory = function(number){
     var db = storage(dbPath)
 
     var items = db.select(sys)
-    items.forEach(element => {
-        console.log(element.timestamp + " " +  element.date + " " + element.content)
-    });
+    var index = items.length > number ? items.length - number : 0;
+    return items.slice(index)
 
 }
 
-exports.PrintHistory = function(number){
+exports.printHistory = function(number){
     if(!number || number <10){
         number = 10
     }
@@ -69,8 +68,9 @@ exports.PrintHistory = function(number){
     var db = storage(dbPath)
 
     var items = db.select(sys)
-    items.forEach(element => {
-        console.log(element.timestamp + " " +  element.date + " " + element.content)
+    var index = items.length > number ? items.length - number : 0;
+    items.slice(index).forEach(element => {
+        console.log( element.date + " [ " + element.content + " ] " +element.remark)
     });
 
 }
