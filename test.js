@@ -32,4 +32,10 @@ var x = function(){
 console.log(hist.count())
 
 
-hist.printHistory(10)
+//hist.printHistory(10)
+
+hist.addHistory("ssssssssssssssssss","remark","test",{abc : " sfs"})
+
+hist.printHistory(1,"test")
+
+console.log(hist.getHistory(2,"all"))

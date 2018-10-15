@@ -17,3 +17,16 @@ hist.addHistory("cmd","remark")
 // print history of 10 lines
 hist.printHistory(10)
 ```
+
+## cli
+    npm i history.node -g
+
+```Shell
+
+hist -n 10 -p yourProgram
+hist last
+hist last -i 2
+hist --number 10 --program yourProgram
+hist [ls] -n 10
+
+```

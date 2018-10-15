@@ -1,26 +1,26 @@
 require('./config')
 var os =require('os')
 var path= require('path')
-var storage = require('mini-db')
+var storage = require('mini-dbx')
 var ioc = require('peeriocjs')
 var config = ioc.module("history.node").invoke.sync.config()
 
 var sys = global.historyNodeSystem || "default"
-var fileName = function(){ return "history." + sys +".json"} 
+var fileName = function(systemName){ return "history." + (systemName || sys) +".json"} 
 
 
 
 var isClearing =false;
 
-var clearVerbose = function(){
+var clearVerbose = function(systemName){
     if(isClearing == false)
     {
         isClearing =true
         setTimeout(() => {
-            var dbPath = path.join(os.tmpdir() , fileName())
+            var dbPath = path.join(os.tmpdir() , fileName(systemName))
             var db = storage(dbPath)
 
-            var items = db.select(sys)
+            var items = db.select(systemName || sys)
             // items.forEach(element => {
             //     console.log(element.timestamp + " " +  element.date + " " + element.content)
             // });
@@ -47,27 +47,27 @@ var historyInfo={
 https://github.com/tianmajs/mini-db
 */
 
-exports.getHistory = function(number){
-    if(!number || number <10){
+exports.getHistory = function(number,systemName){
+    if(!number || number < 1){
         number = 10
     }
-    var dbPath = path.join(os.tmpdir() , fileName())
+    var dbPath = path.join(os.tmpdir() , fileName(systemName))
     var db = storage(dbPath)
 
-    var items = db.select(sys)
+    var items = db.select(systemName || sys)
     var index = items.length > number ? items.length - number : 0;
     return items.slice(index)
 
 }
 
-exports.printHistory = function(number){
-    if(!number || number <10){
+exports.printHistory = function(number,systemName){
+    if(!number || number <1){
         number = 10
     }
-    var dbPath = path.join(os.tmpdir() , fileName())
+    var dbPath = path.join(os.tmpdir() , fileName(systemName))
     var db = storage(dbPath)
 
-    var items = db.select(sys)
+    var items = db.select(systemName || sys)
     var index = items.length > number ? items.length - number : 0;
     items.slice(index).forEach(element => {
         console.log( element.date + " [ " + element.content + " ] " +element.remark)
@@ -76,22 +76,47 @@ exports.printHistory = function(number){
 }
 
 
-exports.addHistory = function(content,remark){
+exports.addHistory = function(content,remark,systemName,ext){
     //async delete history data
-    clearVerbose();
+    clearVerbose(systemName);
+    if(systemName!=="all"){
+        clearVerbose("all")
+    }
     return new Promise((resolve,reject) => {
-        var dbPath = path.join(os.tmpdir() , fileName())
+        var dbPath = path.join(os.tmpdir() , fileName(systemName))
         var db = storage(dbPath)
         //insert
-        db.insert(sys, { 
+        db.insert(systemName || sys, { 
             timestamp: new Date().getTime(),
             date : new Date().toLocaleString(),
             content: content,
-             remark: remark 
+             remark: remark,
+             ext: ext
             },function(err,inserted){
-            if(!err) resolve();
-            reject();
+                if(systemName!== "all"){
+                    var dbPath = path.join(os.tmpdir() , fileName("all"))
+                    var db = storage(dbPath)
+                    //console.log("--here go:" + dbPath)
+                    //insert
+                    db.insert("all", { 
+                        timestamp: new Date().getTime(),
+                        date : new Date().toLocaleString(),
+                        content: content,
+                         remark: remark,
+                         ext : ext
+                        },function(err,inserted){
+                            if(!err) resolve();
+                            reject();
+                    });
+                }
+                else
+                {
+                    if(!err) resolve();
+                    reject();
+                }
+
         });
+        
     })
     
 }
@@ -99,17 +124,17 @@ exports.addHistory = function(content,remark){
 
 exports.setSys = function(sysName){global.historyNodeSystem = sysName; sys= sysName }
 
-exports.clearAll = function(){
-    var dbPath = path.join(os.tmpdir() ,  fileName())
+exports.clearAll = function(systemName){
+    var dbPath = path.join(os.tmpdir() ,  fileName(systemName))
     var db = storage(dbPath)
-    db.remove(sys,'1=1' ,function(err,removed){
+    db.remove(systemName || sys,'1=1' ,function(err,removed){
     });
 }
 
-exports.count =function(){
-    var dbPath = path.join(os.tmpdir() ,  fileName())
+exports.count =function(systemName){
+    var dbPath = path.join(os.tmpdir() ,  fileName(systemName))
     var db = storage(dbPath)
-    return db.select(sys).length;
+    return db.select(systemName || sys).length;
 }
 
 exports.clearVerbose = clearVerbose
