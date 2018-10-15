@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/apporoad/history.node.js#readme",
   "dependencies": {
+    "commander": "^2.19.0",
     "mini-dbx": "^1.0.2",
     "peeriocjs": "^2.4.1"
+  },
+  "bin": {
+    "hist": "./bin/main.js"
   }
 }

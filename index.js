@@ -4,6 +4,7 @@ var path= require('path')
 var storage = require('mini-dbx')
 var ioc = require('peeriocjs')
 var config = ioc.module("history.node").invoke.sync.config()
+var runC = require('./runChildProcess')
 
 var sys = global.historyNodeSystem || "default"
 var fileName = function(systemName){ return "history." + (systemName || sys) +".json"} 
@@ -47,7 +48,7 @@ var historyInfo={
 https://github.com/tianmajs/mini-db
 */
 
-exports.getHistory = function(number,systemName){
+var getHistory = function(number,systemName){
     if(!number || number < 1){
         number = 10
     }
@@ -59,6 +60,8 @@ exports.getHistory = function(number,systemName){
     return items.slice(index)
 
 }
+
+exports.getHistory = getHistory
 
 exports.printHistory = function(number,systemName){
     if(!number || number <1){
@@ -75,8 +78,32 @@ exports.printHistory = function(number,systemName){
 
 }
 
+exports.record = function(systemName){
+    addHistory(process.argv.join(' '),"auto record",systemName,process.argv)
+}
 
-exports.addHistory = function(content,remark,systemName,ext){
+
+exports.last = function(systemName,index,runOrNot){
+    systemName = systemName || "all"
+    index  = index || 1
+    runOrNot = runOrNot || true
+
+    var items = getHistory(index,systemName)
+    if(!items || items.length==0) {
+        console.log("no history")
+        return
+    }
+    var item = items[0]
+    console.log('hist is : ' + item.date + " [ " + item.content + " ] " +item.remark)
+    if(runOrNot && Array.isArray(item.ext)){
+        console.log('rerun...')
+        runC.run(item.ext)
+    }
+    //Array.isArray(
+    //runC
+}
+
+var addHistory = function(content,remark,systemName,ext){
     //async delete history data
     clearVerbose(systemName);
     if(systemName!=="all"){
@@ -121,7 +148,7 @@ exports.addHistory = function(content,remark,systemName,ext){
     
 }
 
-
+exports.addHistory = addHistory
 exports.setSys = function(sysName){global.historyNodeSystem = sysName; sys= sysName }
 
 exports.clearAll = function(systemName){

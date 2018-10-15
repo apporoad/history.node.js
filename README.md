@@ -6,23 +6,29 @@ history utils for node
     npm i --save history.node
 
 ```js
-var hist = require('history.node')
+//record your cli history
+require('history.node').record('yourSysName')
 
 // set your history's system first ,default system name is "default"
-hist.setSys('yourSysName')
+//hist.setSys('yourSysName')
 
-// add history
-hist.addHistory("cmd","remark")
+// add history manumal
+//hist.addHistory("cmd","remark")
 
 // print history of 10 lines
 hist.printHistory(10)
+
+//get history
+hist.getHistory(1)
+
 ```
+
+
 
 ## cli
     npm i history.node -g
 
 ```Shell
-
 hist -n 10 -p yourProgram
 hist last
 hist last -i 2

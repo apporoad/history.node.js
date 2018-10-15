@@ -29,13 +29,13 @@ var x = function(){
 
 //hist.clearVerbose();
 
-console.log(hist.count())
+//console.log(hist.count())
 
 
 //hist.printHistory(10)
 
-hist.addHistory("ssssssssssssssssss","remark","test",{abc : " sfs"})
+//hist.addHistory("ssssssssssssssssss","remark","test",{abc : " sfs"})
 
-hist.printHistory(1,"test")
+//hist.printHistory(1,"test")
 
 console.log(hist.getHistory(2,"all"))
