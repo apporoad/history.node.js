@@ -29,6 +29,9 @@ hist.getHistory(1)
     npm i history.node -g
 
 ```Shell
+hist -h
+
+
 hist -n 10 -p yourProgram
 hist last
 hist last -i 2
